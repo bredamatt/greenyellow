@@ -5,7 +5,25 @@ const NUM_DIGITS: usize = 4;
 const RAN_MAX_RANGE: i32 = 9;
 const RAN_MIN_RANGE: i32 = 1;
 
+fn is_matching(guess: &[i32], secret: &[i32]) -> bool {
+    let mut matching: bool = false;
+    for (index, number) in secret.iter().enumerate() {
+        println!("key={} value={}", index, number);
+    }
+    matching
+}
+
 fn calc_green_and_yellow(guess: &[i32], secret: &[i32]) -> String {
+    /*
+        1. Create result of type String
+        2. Enumerate secret vector
+        3. Compare each index in secret to value at guess Vector
+        4. Iterate with two different functions, both taking a mutable borrowed slice
+            4.1 First check if matching at same index, return Bool
+            4.2 Then check if existing, return Bool
+        5. If not existing (ie if False), push grey box to result String
+    */
+
     let mut result = String::new();
     result
 }
@@ -16,8 +34,8 @@ fn gen_random(rng: &mut ThreadRng) -> i32 {
 }
 
 fn main() {
+    // create a new secret, generate random numbers between 1-9 using
     let mut rng = rand::thread_rng();
-    // create a new secret, generate numbers between 1-9
     let secret = (0..NUM_DIGITS)
         .map(|_| gen_random(&mut rng) )
         .collect::<Vec<_>>();
@@ -34,10 +52,10 @@ fn main() {
         print!("guess: ");
         std::io::stdout().flush().unwrap();
         stdin.read_line(&mut buf).unwrap();
-//        let guess : Result<Vec<i32>, _> = buf.trim().split(' ').map(|s| s.parse()).collect();
-        let guess : Result<Vec<i32>, _> = buf.trim().split_whitespace().map(|s| s.parse()).collect();
+        let guess: Result<Vec<i32>, _> = buf.trim().split_whitespace().map(|s| s.parse()).collect();
 
         // TODO check guess with secret
+        let matching: bool = is_matching(&guess, &secret);
     }
 }
 
