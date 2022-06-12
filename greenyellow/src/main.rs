@@ -34,6 +34,7 @@ fn main() {
         print!("guess: ");
         std::io::stdout().flush().unwrap();
         stdin.read_line(&mut buf).unwrap();
+//        let guess : Result<Vec<i32>, _> = buf.trim().split(' ').map(|s| s.parse()).collect();
         let guess : Result<Vec<i32>, _> = buf.trim().split_whitespace().map(|s| s.parse()).collect();
 
         // TODO check guess with secret
