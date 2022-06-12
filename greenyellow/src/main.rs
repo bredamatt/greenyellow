@@ -30,8 +30,8 @@ fn calc_green_and_yellow(guess: &[i32], secret: &[i32]) -> String {
             }
         } 
     }
-    result = result.trim().to_string();
-    println!("{:?}", result);
+    result = result.trim().to_string();  // update in place?
+    println!("Result: {:?}", result);
     result
 }
 
@@ -45,10 +45,10 @@ fn main() {
     let secret = (0..NUM_DIGITS).map(|_| gen_random(&mut rng)).collect::<Vec<i32>>();
     let stdin = std::io::stdin();
     let mut buf = String::new();
-    println!("{:?}", secret);
+    println!("Secret: {:?}", secret);
     loop {
         buf.clear();
-        print!("guess: ");
+        print!("Guess: ");
         std::io::stdout().flush().unwrap();
         stdin.read_line(&mut buf).unwrap();
         let guess: Result<Vec<i32>, ParseIntError> = buf.trim().split_whitespace().map(|s| s.parse::<i32>()).collect();
