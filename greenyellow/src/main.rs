@@ -45,8 +45,7 @@ fn calc_green_and_yellow(secret: &[i32], guess: &[i32]) -> String {
             result.push_str("🟩 ");
         } else {
             // If secret(i) != guess(i), see if secret(i) in guess
-            let exists_in_guess: bool = linear_search(&secret_num, &guess);
-            match exists_in_guess  {
+            match linear_search(&secret_num, &guess)  {
                 true => result.push_str("🟨 "),
                 false => result.push_str("⬜ "),
             }
@@ -66,7 +65,7 @@ fn main() {
     let mut rng = rand::thread_rng();
     let secret = (0..NUM_DIGITS)
         .map(|_| gen_random(&mut rng) )
-        .collect::<Vec<_>>();
+        .collect::<Vec<i32>>();
 
     println!("{:?}", secret);
 
@@ -81,6 +80,8 @@ fn main() {
         std::io::stdout().flush().unwrap();
         stdin.read_line(&mut buf).unwrap();
         let guess: Result<Vec<i32>, _> = buf.trim().split_whitespace().map(|s| s.parse()).collect();
+
+        // TODO convert guess to &[i32]
 
         // TODO check guess with secret
         calc_green_and_yellow(&secret, &guess);
