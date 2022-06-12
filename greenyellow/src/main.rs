@@ -1,32 +1,18 @@
 use rand::prelude::*;
 use std::io::Write;
+use std::num::ParseIntError;
 
 const NUM_DIGITS: usize = 4;
 const RAN_MAX_RANGE: i32 = 9;
 const RAN_MIN_RANGE: i32 = 1;
-
-// fn is_matching(guess: &[i32], secret: &[i32], result: &[String]) -> bool {
-//     let mut matching: bool = false;
-//     for (i, secret_num) in secret.iter().enumerate() {
-//         println!("key={} value={}", i, number);
-//         for (j, guess_num) in guess.iter().enumerate {
-//             if secret_num == guess_num {
-//                 matching = true;
-//             } else {
-//                 break
-//             }
-//         }
-//     }
-//     matching
-// }
 
 fn linear_search(item: &i32, arr: &[i32]) -> bool {
     let mut exists: bool = false;
     for value in arr.iter() {
         if item == value {
             exists = true;
-            // exit as value was found once to avoid iterating over all guesses
-            break
+            break // exit to avoid iterating over all guesses
+
         }
     }
     exists
@@ -79,12 +65,18 @@ fn main() {
         print!("guess: ");
         std::io::stdout().flush().unwrap();
         stdin.read_line(&mut buf).unwrap();
-        let guess: Result<Vec<i32>, _> = buf.trim().split_whitespace().map(|s| s.parse()).collect();
+        let mut valid_guess: bool = false;
+        let guess: Result<Vec<i32>, ParseIntError> = buf.trim().split_whitespace().map(|s| s.parse::<i32>()).collect();
+        
+        // TODO create check guess function with bool return type
+        match guess {
+            Ok(_) => valid_guess = true,
+            Err(_) => panic!("Incorrectly specified guess. Example: 1 2 3 5"),
+        }
 
-        // TODO convert guess to &[i32]
-
-        // TODO check guess with secret
-        calc_green_and_yellow(&secret, &guess);
+        if valid_guess {
+            calc_green_and_yellow(&secret, &guess.ok().unwrap());
+        }
     }
 }
 
