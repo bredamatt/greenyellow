@@ -45,7 +45,6 @@ fn main() {
     let secret = (0..NUM_DIGITS).map(|_| gen_random(&mut rng)).collect::<Vec<i32>>();
     let stdin = std::io::stdin();
     let mut buf = String::new();
-    println!("Secret: {:?}", secret);
     loop {
         buf.clear();
         print!("Guess: ");
