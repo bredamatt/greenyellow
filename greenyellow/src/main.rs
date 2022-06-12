@@ -52,13 +52,21 @@ fn main() {
         stdin.read_line(&mut buf).unwrap();
         let guess: Result<Vec<i32>, ParseIntError> = buf.trim().split_whitespace().map(|s| s.parse::<i32>()).collect();
         
-        // TODO Bonus
         match guess {
             Ok(_) => {
-                let result = calc_green_and_yellow(&guess.ok().unwrap(), &secret);
-                if result == "🟩 🟩 🟩 🟩".to_string() {
-                    println!("Congratulations! Correct guess!");
-                    break;
+                let array = &guess.ok().unwrap();
+                if array.len() == NUM_DIGITS {
+                    let result = calc_green_and_yellow(array, &secret);
+                    if result == "🟩 🟩 🟩 🟩".to_string() {
+                        println!("Congratulations! Correct guess!");
+                        break;
+                    }
+                } else if array.len() < NUM_DIGITS {
+                    println!("Too few digits!");
+                } else if array.len() > NUM_DIGITS {
+                    println!("Too many digits!");
+                } else {
+                    println!("Invalid guess!");
                 }
             },
             Err(error) => panic!("{:?}", error),
