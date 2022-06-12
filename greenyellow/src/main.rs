@@ -53,6 +53,7 @@ fn main() {
         stdin.read_line(&mut buf).unwrap();
         let guess: Result<Vec<i32>, ParseIntError> = buf.trim().split_whitespace().map(|s| s.parse::<i32>()).collect();
         
+        // TODO Bonus
         match guess {
             Ok(_) => {
                 let result = calc_green_and_yellow(&guess.ok().unwrap(), &secret);
