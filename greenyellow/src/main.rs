@@ -23,20 +23,20 @@ fn calc_green_and_yellow(secret: &[i32], guess: &[i32]) -> String {
     // Create result of type String
     let mut result = String::new();
 
-    // Enumerate secret
-    for (i, secret_num) in secret.iter().enumerate() {
-        println!("key={} value={}", i, secret_num);
-        // Check if secret at i is equal to guess at same index
-        if secret_num == &guess[i] {
+    // Enumerate guess
+    for (i, guess_num) in guess.iter().enumerate() {
+        // Check if guess at i is equal to secret at i
+        if guess_num == &secret[i] {
             result.push_str("🟩 ");
         } else {
-            // If secret(i) != guess(i), see if secret(i) in guess
-            match linear_search(&secret_num, &guess)  {
+            // If guess(i) != secret(i), see if guess(i) in secret
+            match linear_search(&guess_num, &secret)  {
                 true => result.push_str("🟨 "),
                 false => result.push_str("⬜ "),
             }
-        }
+        } 
     }
+    result = result.trim().to_string();
     println!("{:?}", result);
     result
 }
