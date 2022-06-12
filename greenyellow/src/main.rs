@@ -1,43 +1,44 @@
 use rand::prelude::*;
-use std::io::Error;
+use std::io::Write;
+
+const NUM_DIGITS: usize = 4;
+const RAN_MAX_RANGE: i32 = 9;
+const RAN_MIN_RANGE: i32 = 1;
 
 fn calc_green_and_yellow(guess: &[i32], secret: &[i32]) -> String {
-    let matching = guess.iter().zip(secret.iter()).filter(|&(guess, secret)| guess == secret).count();
-    let string = matching.to_string();
-    string
-
+    let mut result = String::new();
+    result
 }
 
-fn generate_random_number(rand_num_generator: &mut ThreadRng) -> i32 {
-    let rand = rand_num_generator.gen();
-    rand
+fn gen_random(rng: &mut ThreadRng) -> i32 {
+    let random: i32 = rng.gen_range(RAN_MIN_RANGE..RAN_MAX_RANGE);
+    random
 }
 
 fn main() {
-    let NUM_DIGITS = 3;
-    let mut rng = thread_rng();
+    let mut rng = rand::thread_rng();
+    // create a new secret, generate numbers between 1-9
+    let secret = (0..NUM_DIGITS)
+        .map(|_| gen_random(&mut rng) )
+        .collect::<Vec<_>>();
 
-    let secret: Vec<i32> = (0..NUM_DIGITS).map(|_| generate_random_number(&mut rng)).collect();
+    println!("{:?}", secret);
 
-    // let stdin = std::io::stdin();
-    // let mut buf = String::new();
-    
-    // loop {
-    //     buf.clear();
-    //     print!("Guess: ");
-    //     stdin.read_line(&mut buf).unwrap();
-        
-    //     // guess is separated by white spaces
-    //     let guess: Result<Vec<i32>,Error> = buf.trim().split(' ').map(|s| s.parse()).collect();
-    // }
 
-    let guess: Vec<i32> = vec![1, 2, 3];
+    let stdin = std::io::stdin();
+    let mut buf = String::new();
 
-    let squares: String = calc_green_and_yellow(&guess, &secret);
+    loop {
+        // get input guess, numbers separated by space
+        buf.clear();
+        print!("guess: ");
+        std::io::stdout().flush().unwrap();
+        stdin.read_line(&mut buf).unwrap();
+        let guess : Result<Vec<i32>, _> = buf.trim().split(' ').map(|s| s.parse()).collect();
 
-    println!("Guess was: {:?}, secret was: {:?}, got {}", guess, secret,  squares);
+        // TODO check guess with secret
+    }
 }
-
 
 #[test]
 fn test_green_and_yellow() {
