@@ -12,7 +12,6 @@ fn linear_search(item: &i32, arr: &[i32]) -> bool {
         if item == value {
             exists = true;
             break // exit to avoid iterating over all guesses
-
         }
     }
     exists
@@ -36,7 +35,7 @@ fn calc_green_and_yellow(guess: &[i32], secret: &[i32]) -> String {
 }
 
 fn gen_random(rng: &mut ThreadRng) -> i32 {
-    let random: i32 = rng.gen_range(RAN_MIN_RANGE..RAN_MAX_RANGE);
+    let random: i32 = rng.gen_range(RAN_MIN_RANGE..=RAN_MAX_RANGE);
     random
 }
 
@@ -53,17 +52,16 @@ fn main() {
         let guess: Result<Vec<i32>, ParseIntError> = buf.trim().split_whitespace().map(|s| s.parse::<i32>()).collect();
         
         match guess {
-            Ok(_) => {
-                let array = &guess.ok().unwrap();
-                if array.len() == NUM_DIGITS {
-                    let result = calc_green_and_yellow(array, &secret);
+            Ok(guess) => {
+                if guess.len() == NUM_DIGITS {
+                    let result = calc_green_and_yellow(&guess, &secret);
                     if result == "🟩 🟩 🟩 🟩".to_string() {
                         println!("Congratulations! Correct guess!");
                         break;
                     }
-                } else if array.len() < NUM_DIGITS {
+                } else if guess.len() < NUM_DIGITS {
                     println!("Too few digits!");
-                } else if array.len() > NUM_DIGITS {
+                } else if guess.len() > NUM_DIGITS {
                     println!("Too many digits!");
                 } else {
                     println!("Invalid guess!");
@@ -80,8 +78,8 @@ fn test_green_and_yellow() {
     assert_eq!(calc_green_and_yellow(&[1, 2, 3, 4], &[1, 2, 3, 4]), "🟩 🟩 🟩 🟩".to_string());
     assert_eq!(calc_green_and_yellow(&[1, 2, 3, 5], &[1, 2, 3, 4]), "🟩 🟩 🟩 ⬜".to_string());
     assert_eq!(calc_green_and_yellow(&[4, 3, 2, 1], &[1, 2, 3, 4]), "🟨 🟨 🟨 🟨".to_string());
-    assert_eq!(calc_green_and_yellow(&[1, 2, 3, 1], &[1, 2, 3, 4]), "🟩 🟩 🟩 🟨".to_string());
-    assert_eq!(calc_green_and_yellow(&[1, 1, 1, 1], &[1, 2, 3, 4]), "🟩 🟨 🟨 🟨".to_string());
+    assert_eq!(calc_green_and_yellow(&[1, 2, 3, 1], &[1, 2, 3, 4]), "🟩 🟩 🟩 ⬜".to_string());
+    assert_eq!(calc_green_and_yellow(&[1, 1, 1, 1], &[1, 2, 3, 4]), "🟩 ⬜ ⬜ ⬜".to_string());
     assert_eq!(calc_green_and_yellow(&[1, 2, 2, 2], &[2, 2, 2, 1]), "🟨 🟩 🟩 🟨".to_string());
     assert_eq!(calc_green_and_yellow(&[1, 3, 3, 2], &[2, 2, 2, 1]), "🟨 ⬜ ⬜ 🟨".to_string());
 }
